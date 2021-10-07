@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using System;
 using System.IO;
 
 namespace Zork
@@ -16,10 +16,11 @@ namespace Zork
 
         static void Main(string[] args)
         {
-            const string roomDescriptionsFilename = "Rooms.txt";
-            string roomsFilename = (args.Length > 0 ? args[(int)CommandLineArguments.GameFilename] : roomDescriptionsFilename);
+            const string roomDescriptionsFilename = "Rooms.json";
 
-            InitializeRoomDescriptions(roomsFilename);
+            string gameFilename = args.Length > 0 ? args[(int)CommandLineArguments.GameFilename] : roomDescriptionsFilename;
+
+            InitializeRoomDescriptions(gameFilename);
 
             Console.WriteLine("Welcome to Zork!");
 
@@ -67,73 +68,43 @@ namespace Zork
 
         private static bool Move(Commands command)
         {
-            bool didMove = true;
+        bool didMove = true;
 
-            switch (command)
-            {
-                case Commands.NORTH when Location.Row < Rooms.GetLength(0) - 1:
-                    Location.Row++;
-                    break;
-            
-                case Commands.SOUTH when Location.Row > 0:
-                    Location.Row--;
-                    break;
-            
-                case Commands.EAST when Location.Column < Rooms.GetLength(1) - 1:
-                    Location.Column++;
-                    break;
-            
-                case Commands.WEST when Location.Column > 0:
-                    Location.Column--;
-                    break;
-            
-                default:
-                    didMove = false;
-                    break;
-            }
-            
-            return didMove;
+        switch (command)
+        {
+            case Commands.NORTH when Location.Row < Rooms.GetLength(0) - 1:
+                Location.Row++;
+                break;
+        
+            case Commands.SOUTH when Location.Row > 0:
+                Location.Row--;
+                break;
+        
+            case Commands.EAST when Location.Column < Rooms.GetLength(1) - 1:
+                Location.Column++;
+                break;
+        
+            case Commands.WEST when Location.Column > 0:
+                Location.Column--;
+                break;
+        
+            default:
+                didMove = false;
+                break;
+        }
+        
+        return didMove;
         }
 
         private static Commands ToCommand(string commandString) => Enum.TryParse<Commands>(commandString, true, out Commands result) ? result : Commands.UNKNOWN;
-        
-        private static void InitializeRoomDescriptions(string roomDescriptionsFilename)
-        {
-            var roomMap = new Dictionary<string, Room>();
 
-            foreach (Room room in Rooms)
-            {
-                roomMap.Add(room.Name, room);
-            }
-        
-            string[] lines = File.ReadAllLines(roomDescriptionsFilename);
-            foreach (string line in lines)
-            {
-                const string delimiter = "##";
-                const int expectedFieldCount = 2;
-            
-                string[] fields = line.Split(delimiter);
-                if (fields.Length != expectedFieldCount)
-                {
-                    throw new InvalidDataException("Invalid record.");
-                }
-            
-                (string name, string description) = (fields[(int)Fields.Name], fields[(int)Fields.Description]);
-                roomMap[name].Description = description;
-            }
-        }
+        private static void InitializeRoomDescriptions(string roomsFilename) => Rooms = JsonConvert.DeserializeObject<Room[,]>(File.ReadAllText(roomsFilename));
 
-        private static readonly Room[,] Rooms = {
+        private static Room[,] Rooms = {
             { new Room("Rocky Trail"), new Room("South of House"), new Room("Canyon View") },
             { new Room("Forest"), new Room("West of House"), new Room("Behind House") },
             { new Room("Dense Woods"), new Room("North of House"), new Room("Clearing") }
         };
-
-        private enum Fields
-        {
-            Name = 0,
-            Description = 1
-        }
 
         private static (int Row, int Column) Location = (1, 1);
 
