@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
+// using System.Linq;
 using System.Runtime.Serialization;
 
 namespace Zork
@@ -13,6 +13,7 @@ namespace Zork
         [OnDeserialized]
         private void OnDeserialized(StreamingContext context)
         {
+            // one-line option
             // RoomsByName = Rooms.ToDictionary(room => room.Name, room => room);
 
             RoomsByName = new Dictionary<string, Room>();

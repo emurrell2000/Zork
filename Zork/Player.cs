@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using System;
 
 namespace Zork
 {
@@ -12,6 +11,12 @@ namespace Zork
 
         [JsonIgnore]
         public Room PreviousRoom { get; set; }
+
+        [JsonIgnore]
+        public int Score { get; set; }
+
+        [JsonIgnore]
+        public int MoveCount { get; set; }
 
         public Player(World world)
         {

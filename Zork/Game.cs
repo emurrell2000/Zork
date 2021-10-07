@@ -22,6 +22,8 @@ namespace Zork
         {
             Player = new Player(World);
             Player.CurrentRoom = World.RoomsByName[StartingLocation];
+            Player.MoveCount = 0;
+            Player.Score = 0;
         }
 
         public void Run()
@@ -40,16 +42,17 @@ namespace Zork
                 Console.Write("> ");
 
                 command = ToCommand(Console.ReadLine().Trim());
-                // command = Console.ReadLine().Trim().ToCommand();
             
                 switch (command)
                 {
                     case Commands.QUIT:
                         Console.WriteLine(ExitMessage);
+                        Player.MoveCount++; // effectively doesn't do anything but it's fun :)
                         break;
             
                     case Commands.LOOK:
                         Console.WriteLine(Player.CurrentRoom.Description);
+                        Player.MoveCount++;
                         break;
             
                     case Commands.NORTH:
@@ -61,6 +64,17 @@ namespace Zork
                         {
                             Console.WriteLine("The way is shut!");
                         }
+                        Player.MoveCount++;
+                        break;
+
+                    case Commands.SCORE:
+                        Player.MoveCount++;
+                        Console.WriteLine($"Your score would be {Player.Score}, in {Player.MoveCount} move(s).");
+                        break;
+
+                    case Commands.REWARD:
+                        Player.MoveCount++;
+                        Player.Score++;
                         break;
             
                     default:
