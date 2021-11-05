@@ -1,10 +1,12 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace Zork
 {
-    public class Room
+    public class Room : INotifyPropertyChanged
     {
+        public event PropertyChangedEventHandler PropertyChanged;
         public string Name { get; private set; }
 
         public string Description { get; private set; }
@@ -24,8 +26,9 @@ namespace Zork
         public void UpdateNeighbors(World world)
         {
             Neighbors = new Dictionary<Directions, Room>();
-            foreach (var (direction, name) in NeighborNames)
+            foreach (var pair in NeighborNames)
             {
+                (Directions direction, string name) = (pair.Key, pair.Value);
                 Neighbors.Add(direction, world.RoomsByName[name]);
             }
         }
