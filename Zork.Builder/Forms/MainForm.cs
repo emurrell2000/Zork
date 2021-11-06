@@ -74,7 +74,6 @@ namespace Zork.Builder
         #region EventHandlers
         private void newMenu_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Not yet implemented");
             ViewModel.Game = null;
             IsGameLoaded = true;
             openFilename = null;
@@ -149,7 +148,7 @@ namespace Zork.Builder
 
         private void deleteRoomButton_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Not yet implemented");
+            ViewModel.Rooms.Remove((Room)roomsListBox.SelectedItem);
         }
         #endregion EventHandlers
 
