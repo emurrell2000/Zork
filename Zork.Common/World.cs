@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using System.Collections.Generic;
 using System.ComponentModel;
 // using System.Linq;
 using System.Runtime.Serialization;
@@ -9,6 +10,7 @@ namespace Zork
     {
         public List<Room> Rooms { get; set; }
 
+        [JsonIgnore]
         public Dictionary<string, Room> RoomsByName { get; set; }
 
         [OnDeserialized]

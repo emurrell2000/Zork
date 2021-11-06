@@ -55,8 +55,11 @@ namespace Zork.Builder
 
             _gameDependentControls = new Control[]
             {
+                roomsListBox,
                 addRoomButton,
-                deleteRoomButton
+                deleteRoomButton,
+                startingTextBox,
+                roomInfoGroupBox
             };
 
             _gameDependentMenuItem = new ToolStripMenuItem[]
@@ -72,6 +75,9 @@ namespace Zork.Builder
         private void newMenu_Click(object sender, EventArgs e)
         {
             MessageBox.Show("Not yet implemented");
+            ViewModel.Game = null;
+            IsGameLoaded = true;
+            openFilename = null;
         }
 
         private void openMenu_Click(object sender, EventArgs e)
@@ -81,6 +87,7 @@ namespace Zork.Builder
                 try
                 {
                     string jsonString = File.ReadAllText(openFileDialog.FileName);
+                    openFilename = openFileDialog.FileName;
                     ViewModel.Game = JsonConvert.DeserializeObject<Game>(jsonString);
                     IsGameLoaded = true;
                 }
@@ -93,7 +100,23 @@ namespace Zork.Builder
 
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            _viewModel.SaveGame();
+            if (openFilename != null)
+            {
+                _viewModel.SaveGame(openFilename);
+            }
+            else
+            {
+                saveAsToolStripMenuItem_Click(sender, e);
+            }
+        }
+
+        private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                openFilename = saveFileDialog.FileName;
+                _viewModel.SaveGame(openFilename);
+            }
         }
 
         private void exitMenu_Click(object sender, EventArgs e)
@@ -107,15 +130,18 @@ namespace Zork.Builder
             {
                 if (addRoomForm.ShowDialog() == DialogResult.OK)
                 {
-                    Room existingRoom = ViewModel.Rooms.FirstOrDefault(room => room.Name.Equals(addRoomForm.RoomName, StringComparison.OrdinalIgnoreCase));
-                    if (existingRoom != null)
+                    if (ViewModel.Rooms != null)
                     {
-                        MessageBox.Show("Room already exists", "Zork Builder", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                    }
-                    else
-                    {
-                        Room room = new Room(addRoomForm.RoomName);
-                        ViewModel.Rooms.Add(room);
+                        Room existingRoom = ViewModel.Rooms.FirstOrDefault(room => room.Name.Equals(addRoomForm.RoomName, StringComparison.OrdinalIgnoreCase));
+                        if (existingRoom != null)
+                        {
+                            MessageBox.Show("Room already exists", "Zork Builder", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                        }
+                        else
+                        {
+                            Room room = new Room(addRoomForm.RoomName);
+                            ViewModel.Rooms.Add(room);
+                        }
                     }
                 }
             }
@@ -130,5 +156,6 @@ namespace Zork.Builder
         private GameViewModel _viewModel;
         private Control[] _gameDependentControls;
         private ToolStripMenuItem[] _gameDependentMenuItem;
+        private string openFilename;
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using Zork.Common;
@@ -12,11 +13,10 @@ namespace Zork.Builder
 
         public bool IsGameLoaded { get; set; }
 
-        public BindingList<Room> Rooms { get; set; }
-
         public string WelcomeMessage { get; set; }
         public string ExitMessage { get; set; }
         public string StartingLocation { get; set; }
+        public BindingList<Room> Rooms { get; set; }
 
         public Game Game
         {
@@ -27,18 +27,26 @@ namespace Zork.Builder
                     _game = value;
                     if (_game != null)
                     {
-                        Rooms = new BindingList<Room>(_game.World.Rooms);
                         WelcomeMessage = _game.WelcomeMessage;
                         ExitMessage = _game.ExitMessage;
                         StartingLocation = _game.StartingLocation;
+                        Rooms = new BindingList<Room>(_game.World.Rooms);
                     }
                     else
                     {
-                        Rooms = new BindingList<Room>(Array.Empty<Room>());
                         WelcomeMessage = "Welcome to Zork!";
                         ExitMessage = "Thank you for playing!";
                         StartingLocation = "";
+                        Rooms = new BindingList<Room>(new List<Room>());
                     }
+                }
+                // new game
+                if (_game == null)
+                {
+                    WelcomeMessage = "Welcome to Zork!";
+                    ExitMessage = "Thank you for playing!";
+                    StartingLocation = "";
+                    Rooms = new BindingList<Room>(new List<Room>());
                 }
             }
         }
