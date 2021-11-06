@@ -5,9 +5,8 @@ using System.Runtime.Serialization;
 
 namespace Zork
 {
-    public class Game : INotifyPropertyChanged
+    public class Game
     {
-        public event PropertyChangedEventHandler PropertyChanged;
         public World World { get; set; }
 
         public string StartingLocation { get; set; }

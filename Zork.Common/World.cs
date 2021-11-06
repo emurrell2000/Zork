@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
 // using System.Linq;
 using System.Runtime.Serialization;
 
@@ -6,7 +7,7 @@ namespace Zork
 {
     public class World
     {
-        public Room[] Rooms { get; set; }
+        public List<Room> Rooms { get; set; }
 
         public Dictionary<string, Room> RoomsByName { get; set; }
 

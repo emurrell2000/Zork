@@ -14,6 +14,27 @@ namespace Zork.Builder
 {
     public partial class MainForm : Form
     {
+        private bool IsGameLoaded
+        {
+            get
+            {
+                return _viewModel.IsGameLoaded;
+            }
+            set
+            {
+                _viewModel.IsGameLoaded = value;
+
+                foreach (var control in _gameDependentControls)
+                {
+                    control.Enabled = _viewModel.IsGameLoaded;
+                }
+
+                foreach (var menuItem in _gameDependentMenuItem)
+                {
+                    menuItem.Enabled = _viewModel.IsGameLoaded;
+                }
+            }
+        }
         private GameViewModel ViewModel
         {
             get => _viewModel;
@@ -31,6 +52,48 @@ namespace Zork.Builder
         {
             InitializeComponent();
             ViewModel = new GameViewModel();
+
+            _gameDependentControls = new Control[]
+            {
+                addRoomButton,
+                deleteRoomButton
+            };
+
+            _gameDependentMenuItem = new ToolStripMenuItem[]
+            {
+                closeGameToolStripMenuItem,
+                saveToolStripMenuItem,
+                saveAsToolStripMenuItem
+            };
+
+            IsGameLoaded = false;
+        }
+        #region EventHandlers
+        private void newMenu_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Not yet implemented");
+        }
+
+        private void openMenu_Click(object sender, EventArgs e)
+        {
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    string jsonString = File.ReadAllText(openFileDialog.FileName);
+                    ViewModel.Game = JsonConvert.DeserializeObject<Game>(jsonString);
+                    IsGameLoaded = true;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Zork Builder", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
+        private void saveToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            _viewModel.SaveGame();
         }
 
         private void exitMenu_Click(object sender, EventArgs e)
@@ -38,37 +101,34 @@ namespace Zork.Builder
             Close();
         }
 
-        private void openMenu_Click(object sender, EventArgs e)
-        {
-            if (openFileDialog.ShowDialog() == DialogResult.OK)
-            {
-                string jsonString = File.ReadAllText(openFileDialog.FileName);
-                ViewModel.Game = JsonConvert.DeserializeObject<Game>(jsonString);
-            }
-        }
-
-        private GameViewModel _viewModel;
-
-        private void newMenu_Click(object sender, EventArgs e)
-        {
-            MessageBox.Show("Not yet implemented");
-        }
-
-        private void addButton_Click(object sender, EventArgs e)
+        private void addRoomButton_Click(object sender, EventArgs e)
         {
             using (AddRoomForm addRoomForm = new AddRoomForm())
             {
                 if (addRoomForm.ShowDialog() == DialogResult.OK)
                 {
-                    Room room = new Room(addRoomForm.RoomName);
-                    ViewModel.Rooms.Add(room);
+                    Room existingRoom = ViewModel.Rooms.FirstOrDefault(room => room.Name.Equals(addRoomForm.RoomName, StringComparison.OrdinalIgnoreCase));
+                    if (existingRoom != null)
+                    {
+                        MessageBox.Show("Room already exists", "Zork Builder", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    }
+                    else
+                    {
+                        Room room = new Room(addRoomForm.RoomName);
+                        ViewModel.Rooms.Add(room);
+                    }
                 }
             }
         }
 
-        private void deleteButton_Click(object sender, EventArgs e)
+        private void deleteRoomButton_Click(object sender, EventArgs e)
         {
             MessageBox.Show("Not yet implemented");
         }
+        #endregion EventHandlers
+
+        private GameViewModel _viewModel;
+        private Control[] _gameDependentControls;
+        private ToolStripMenuItem[] _gameDependentMenuItem;
     }
 }

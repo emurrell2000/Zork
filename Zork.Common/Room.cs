@@ -4,9 +4,8 @@ using System.ComponentModel;
 
 namespace Zork
 {
-    public class Room : INotifyPropertyChanged
+    public class Room
     {
-        public event PropertyChangedEventHandler PropertyChanged;
         public string Name { get; private set; }
 
         public string Description { get; private set; }
