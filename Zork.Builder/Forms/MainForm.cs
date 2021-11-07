@@ -97,6 +97,14 @@ namespace Zork.Builder
                     openFilename = openFileDialog.FileName;
                     ViewModel.Game = JsonConvert.DeserializeObject<Game>(jsonString);
                     IsGameLoaded = true;
+
+                    Room selectedRoom = roomsListBox.SelectedItem as Room;
+                    foreach (KeyValuePair<Directions, NeighborControl> entry in _neighborControlMap)
+                    {
+                        entry.Value.Rooms = ViewModel.Rooms;
+                        entry.Value.Room = selectedRoom;
+                    }
+
                 }
                 catch (Exception ex)
                 {

@@ -33,9 +33,7 @@ namespace Zork.Builder
             this.directionTextBox = new System.Windows.Forms.TextBox();
             this.neighborComboBox = new System.Windows.Forms.ComboBox();
             this.gameViewModelBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.roomsBindingSource = new System.Windows.Forms.BindingSource(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.gameViewModelBindingSource)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.roomsBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // directionTextBox
@@ -45,11 +43,12 @@ namespace Zork.Builder
             this.directionTextBox.ReadOnly = true;
             this.directionTextBox.Size = new System.Drawing.Size(124, 20);
             this.directionTextBox.TabIndex = 0;
+            this.directionTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // neighborComboBox
             // 
-            this.neighborComboBox.DataSource = this.roomsBindingSource;
             this.neighborComboBox.DisplayMember = "Name";
+            this.neighborComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.neighborComboBox.FormattingEnabled = true;
             this.neighborComboBox.Location = new System.Drawing.Point(3, 29);
             this.neighborComboBox.Name = "neighborComboBox";
@@ -60,12 +59,6 @@ namespace Zork.Builder
             // 
             this.gameViewModelBindingSource.DataSource = typeof(Zork.Builder.GameViewModel);
             // 
-            // roomsBindingSource
-            // 
-            this.roomsBindingSource.AllowNew = true;
-            this.roomsBindingSource.DataMember = "Rooms";
-            this.roomsBindingSource.DataSource = this.gameViewModelBindingSource;
-            // 
             // NeighborControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -75,7 +68,6 @@ namespace Zork.Builder
             this.Name = "NeighborControl";
             this.Size = new System.Drawing.Size(130, 57);
             ((System.ComponentModel.ISupportInitialize)(this.gameViewModelBindingSource)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.roomsBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -86,6 +78,5 @@ namespace Zork.Builder
         private System.Windows.Forms.ComboBox neighborComboBox;
         private System.Windows.Forms.TextBox directionTextBox;
         private System.Windows.Forms.BindingSource gameViewModelBindingSource;
-        private System.Windows.Forms.BindingSource roomsBindingSource;
     }
 }

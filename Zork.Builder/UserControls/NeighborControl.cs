@@ -22,32 +22,33 @@ namespace Zork.Builder
                 if (_room != value)
                 {
                     _room = value;
-                    if (Room != null)
+                    if (_room != null)
                     {
-                        // var neighborList = new BindingList<Room>();
-                        ViewModel.Rooms.Insert(0, NoNeighbor);
+                        var neighborList = new List<Room>(Rooms);
+                        neighborList.Insert(0, NoNeighbor);
                         neighborComboBox.SelectedIndexChanged -= NeighborComboBox_SelectedIndexChanged;
-                        // neighborComboBox.DataSource = neighborList;
-                        
+                        neighborComboBox.DataSource = neighborList;
 
                         if (_room.Neighbors.TryGetValue(Direction, out Room neighbor))
                         {
-                            neighborComboBox.SelectedItem = neighbor;
+                            Neighbor = neighbor;
                         }
                         else
                         {
-                            neighborComboBox.SelectedItem = NoNeighbor;
+                            Neighbor = NoNeighbor;
                         }
 
                         neighborComboBox.SelectedIndexChanged += NeighborComboBox_SelectedIndexChanged;
                     }
-                }
-                else
-                {
-                    neighborComboBox.DataSource = null;
+                    else
+                    {
+                        neighborComboBox.DataSource = null;
+                    }
                 }
             }
         }
+
+        public BindingList<Room> Rooms { get; set; }
 
         public NeighborControl(Directions neighborDirection, Room room)
         {
@@ -55,24 +56,24 @@ namespace Zork.Builder
             Room = room ?? throw new ArgumentNullException(nameof(room));
         }
 
-        private GameViewModel ViewModel
-        {
-            get => _viewModel;
-            set
-            {
-                if (_viewModel != value)
-                {
-                    _viewModel = value;
-                    gameViewModelBindingSource.DataSource = _viewModel;
-                }
-            }
-        }
+        // private GameViewModel ViewModel
+        // {
+        //     get => _viewModel;
+        //     set
+        //     {
+        //         if (_viewModel != value)
+        //         {
+        //             _viewModel = value;
+        //             gameViewModelBindingSource.DataSource = _viewModel;
+        //         }
+        //     }
+        // }
 
         private void NeighborComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (_room != null)
             {
-                Room selectedNeighbor = (Room)neighborComboBox.SelectedItem;
+                Room selectedNeighbor = (Room)Neighbor;
                 if (selectedNeighbor == NoNeighbor)
                 {
                     _room.Neighbors.Remove(Direction);
@@ -84,11 +85,17 @@ namespace Zork.Builder
             }
         }
 
+        public Room Neighbor
+        {
+            get => (Room)neighborComboBox.SelectedItem;
+            set => neighborComboBox.SelectedItem = value;
+        }
+
         public NeighborControl()
         {
             InitializeComponent();
-            ViewModel = new GameViewModel();
-            gameViewModelBindingSource.DataSource = ViewModel;
+            // ViewModel = new GameViewModel();
+            // gameViewModelBindingSource.DataSource = ViewModel;
         }
 
         public Directions Direction
@@ -101,7 +108,7 @@ namespace Zork.Builder
             }
         }
 
-        private GameViewModel _viewModel;
+        // private GameViewModel _viewModel;
         private Room _room;
         private Directions _neighborDirection;
     }
