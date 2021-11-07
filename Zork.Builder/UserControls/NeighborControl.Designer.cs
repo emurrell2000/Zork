@@ -29,34 +29,53 @@ namespace Zork.Builder
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.TextBox directionTextBox;
+            this.components = new System.ComponentModel.Container();
+            this.directionTextBox = new System.Windows.Forms.TextBox();
             this.neighborComboBox = new System.Windows.Forms.ComboBox();
-            directionTextBox = new System.Windows.Forms.TextBox();
+            this.gameViewModelBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.roomsBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            ((System.ComponentModel.ISupportInitialize)(this.gameViewModelBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.roomsBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // directionTextBox
             // 
-            directionTextBox.Location = new System.Drawing.Point(3, 3);
-            directionTextBox.Name = "directionTextBox";
-            directionTextBox.Size = new System.Drawing.Size(121, 20);
-            directionTextBox.TabIndex = 0;
+            this.directionTextBox.Location = new System.Drawing.Point(3, 3);
+            this.directionTextBox.Name = "directionTextBox";
+            this.directionTextBox.ReadOnly = true;
+            this.directionTextBox.Size = new System.Drawing.Size(124, 20);
+            this.directionTextBox.TabIndex = 0;
             // 
             // neighborComboBox
             // 
+            this.neighborComboBox.DataSource = this.roomsBindingSource;
+            this.neighborComboBox.DisplayMember = "Name";
             this.neighborComboBox.FormattingEnabled = true;
             this.neighborComboBox.Location = new System.Drawing.Point(3, 29);
             this.neighborComboBox.Name = "neighborComboBox";
-            this.neighborComboBox.Size = new System.Drawing.Size(121, 21);
+            this.neighborComboBox.Size = new System.Drawing.Size(124, 21);
             this.neighborComboBox.TabIndex = 1;
+            // 
+            // gameViewModelBindingSource
+            // 
+            this.gameViewModelBindingSource.DataSource = typeof(Zork.Builder.GameViewModel);
+            // 
+            // roomsBindingSource
+            // 
+            this.roomsBindingSource.AllowNew = true;
+            this.roomsBindingSource.DataMember = "Rooms";
+            this.roomsBindingSource.DataSource = this.gameViewModelBindingSource;
             // 
             // NeighborControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.neighborComboBox);
-            this.Controls.Add(directionTextBox);
+            this.Controls.Add(this.directionTextBox);
             this.Name = "NeighborControl";
-            this.Size = new System.Drawing.Size(129, 57);
+            this.Size = new System.Drawing.Size(130, 57);
+            ((System.ComponentModel.ISupportInitialize)(this.gameViewModelBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.roomsBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -65,5 +84,8 @@ namespace Zork.Builder
         #endregion
 
         private System.Windows.Forms.ComboBox neighborComboBox;
+        private System.Windows.Forms.TextBox directionTextBox;
+        private System.Windows.Forms.BindingSource gameViewModelBindingSource;
+        private System.Windows.Forms.BindingSource roomsBindingSource;
     }
 }

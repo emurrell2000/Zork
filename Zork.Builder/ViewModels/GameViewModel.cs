@@ -9,12 +9,15 @@ namespace Zork.Builder
 {
     internal class GameViewModel : INotifyPropertyChanged
     {
+#pragma warning disable CS0067
         public event PropertyChangedEventHandler PropertyChanged;
+#pragma warning restore CS0067
 
         public bool IsGameLoaded { get; set; }
 
         public string WelcomeMessage { get; set; }
         public string ExitMessage { get; set; }
+        public BindingList<Room> StartingLocations { get; set; }
         public string StartingLocation { get; set; }
         public BindingList<Room> Rooms { get; set; }
 
@@ -31,12 +34,14 @@ namespace Zork.Builder
                         ExitMessage = _game.ExitMessage;
                         StartingLocation = _game.StartingLocation;
                         Rooms = new BindingList<Room>(_game.World.Rooms);
+                        StartingLocations = new BindingList<Room>(Rooms);
                     }
                     else
                     {
                         WelcomeMessage = "Welcome to Zork!";
                         ExitMessage = "Thank you for playing!";
                         StartingLocation = "";
+                        StartingLocations = new BindingList<Room>(new List<Room>());
                         Rooms = new BindingList<Room>(new List<Room>());
                     }
                 }
@@ -46,6 +51,7 @@ namespace Zork.Builder
                     WelcomeMessage = "Welcome to Zork!";
                     ExitMessage = "Thank you for playing!";
                     StartingLocation = "";
+                    StartingLocations = new BindingList<Room>(new List<Room>());
                     Rooms = new BindingList<Room>(new List<Room>());
                 }
             }

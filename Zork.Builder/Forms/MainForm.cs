@@ -52,13 +52,21 @@ namespace Zork.Builder
         {
             InitializeComponent();
             ViewModel = new GameViewModel();
+            gameViewModelBindingSource.DataSource = ViewModel;
+
+            _neighborControlMap = new Dictionary<Directions, NeighborControl>
+            {
+                { Directions.North, northNeighborControl },
+                { Directions.South, southNeighborControl },
+                { Directions.East, eastNeighborControl },
+                { Directions.West, westNeighborControl }
+            };
 
             _gameDependentControls = new Control[]
             {
                 roomsListBox,
                 addRoomButton,
-                deleteRoomButton,
-                startingTextBox,
+                startingComboBox,
                 roomInfoGroupBox
             };
 
@@ -149,6 +157,30 @@ namespace Zork.Builder
         private void deleteRoomButton_Click(object sender, EventArgs e)
         {
             ViewModel.Rooms.Remove((Room)roomsListBox.SelectedItem);
+            roomsListBox.SelectedItem = ViewModel.Rooms.FirstOrDefault();
+        }
+
+        private void roomsListBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            deleteRoomButton.Enabled = roomsListBox.SelectedItem != null;
+            Room selectedRoom = roomsListBox.SelectedItem as Room;
+            foreach (KeyValuePair<Directions, NeighborControl> entry in _neighborControlMap)
+            {
+                entry.Value.Room = selectedRoom;
+            }
+        }
+
+        private void startingComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Room existingStart = ViewModel.Rooms.FirstOrDefault(room => room.Name.Equals(_viewModel.StartingLocation, StringComparison.OrdinalIgnoreCase));
+            if (existingStart != null)
+            {
+                startingComboBox.SelectedItem = existingStart;
+            }
+            else
+            {
+                MessageBox.Show("No start room selected", "Zork Builder", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
         }
         #endregion EventHandlers
 
@@ -156,5 +188,6 @@ namespace Zork.Builder
         private Control[] _gameDependentControls;
         private ToolStripMenuItem[] _gameDependentMenuItem;
         private string openFilename;
+        private readonly Dictionary<Directions, NeighborControl> _neighborControlMap;
     }
 }
