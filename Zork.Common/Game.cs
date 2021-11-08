@@ -7,8 +7,6 @@ namespace Zork
 {
     public class Game
     {
-        public World World { get; set; }
-
         public string StartingLocation { get; set; }
 
         [JsonIgnore]
@@ -17,6 +15,8 @@ namespace Zork
         public string WelcomeMessage { get; set; }
 
         public string ExitMessage { get; set; }
+
+        public World World { get; set; }
 
         [OnDeserialized]
         private void OnDeserialized(StreamingContext context)

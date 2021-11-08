@@ -105,6 +105,15 @@ namespace Zork.Builder
                         entry.Value.Room = selectedRoom;
                     }
 
+                    Room startingRoom = ViewModel.StartingLocations.FirstOrDefault(room => room.Name.Equals(ViewModel.StartingLocation, StringComparison.OrdinalIgnoreCase));
+                    if (startingRoom != null)
+                    {
+                        startingComboBox.SelectedItem = ViewModel.StartingLocations.FirstOrDefault(room => room.Name.Equals(ViewModel.StartingLocation, StringComparison.OrdinalIgnoreCase));
+                    }
+                    else
+                    {
+                        startingComboBox.SelectedItem = ViewModel.StartingLocations.FirstOrDefault();
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -180,14 +189,10 @@ namespace Zork.Builder
 
         private void startingComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Room existingStart = ViewModel.Rooms.FirstOrDefault(room => room.Name.Equals(_viewModel.StartingLocation, StringComparison.OrdinalIgnoreCase));
-            if (existingStart != null)
+            Room selectedRoom = startingComboBox.SelectedItem as Room;
+            if (selectedRoom != null)
             {
-                startingComboBox.SelectedItem = existingStart;
-            }
-            else
-            {
-                MessageBox.Show("No start room selected", "Zork Builder", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                ViewModel.StartingLocation = selectedRoom.Name;
             }
         }
         #endregion EventHandlers
@@ -197,5 +202,6 @@ namespace Zork.Builder
         private ToolStripMenuItem[] _gameDependentMenuItem;
         private string openFilename;
         private readonly Dictionary<Directions, NeighborControl> _neighborControlMap;
+
     }
 }

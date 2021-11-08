@@ -206,7 +206,9 @@ namespace Zork.Builder
             this.southNeighborControl.Direction = Zork.Directions.South;
             this.southNeighborControl.Location = new System.Drawing.Point(80, 390);
             this.southNeighborControl.Name = "southNeighborControl";
+            this.southNeighborControl.Neighbor = null;
             this.southNeighborControl.Room = null;
+            this.southNeighborControl.Rooms = null;
             this.southNeighborControl.Size = new System.Drawing.Size(129, 57);
             this.southNeighborControl.TabIndex = 7;
             // 
@@ -215,7 +217,9 @@ namespace Zork.Builder
             this.eastNeighborControl.Direction = Zork.Directions.East;
             this.eastNeighborControl.Location = new System.Drawing.Point(153, 331);
             this.eastNeighborControl.Name = "eastNeighborControl";
+            this.eastNeighborControl.Neighbor = null;
             this.eastNeighborControl.Room = null;
+            this.eastNeighborControl.Rooms = null;
             this.eastNeighborControl.Size = new System.Drawing.Size(129, 57);
             this.eastNeighborControl.TabIndex = 6;
             // 
@@ -224,7 +228,9 @@ namespace Zork.Builder
             this.westNeighborControl.Direction = Zork.Directions.West;
             this.westNeighborControl.Location = new System.Drawing.Point(6, 331);
             this.westNeighborControl.Name = "westNeighborControl";
+            this.westNeighborControl.Neighbor = null;
             this.westNeighborControl.Room = null;
+            this.westNeighborControl.Rooms = null;
             this.westNeighborControl.Size = new System.Drawing.Size(130, 57);
             this.westNeighborControl.TabIndex = 5;
             // 
@@ -233,7 +239,9 @@ namespace Zork.Builder
             this.northNeighborControl.Direction = Zork.Directions.North;
             this.northNeighborControl.Location = new System.Drawing.Point(80, 268);
             this.northNeighborControl.Name = "northNeighborControl";
+            this.northNeighborControl.Neighbor = null;
             this.northNeighborControl.Room = null;
+            this.northNeighborControl.Rooms = null;
             this.northNeighborControl.Size = new System.Drawing.Size(129, 57);
             this.northNeighborControl.TabIndex = 4;
             // 
@@ -322,6 +330,7 @@ namespace Zork.Builder
             // 
             this.startingComboBox.DataSource = this.startBindingSource;
             this.startingComboBox.DisplayMember = "Name";
+            this.startingComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.startingComboBox.FormattingEnabled = true;
             this.startingComboBox.Location = new System.Drawing.Point(18, 485);
             this.startingComboBox.Name = "startingComboBox";

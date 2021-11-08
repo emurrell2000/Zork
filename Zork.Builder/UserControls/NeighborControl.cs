@@ -29,9 +29,16 @@ namespace Zork.Builder
                         neighborComboBox.SelectedIndexChanged -= NeighborComboBox_SelectedIndexChanged;
                         neighborComboBox.DataSource = neighborList;
 
-                        if (_room.Neighbors.TryGetValue(Direction, out Room neighbor))
+                        if (_room.Neighbors != null)
                         {
-                            Neighbor = neighbor;
+                            if (_room.Neighbors.TryGetValue(Direction, out Room neighbor))
+                            {
+                                Neighbor = neighbor;
+                            }
+                            else
+                            {
+                                Neighbor = NoNeighbor;
+                            }
                         }
                         else
                         {
@@ -56,31 +63,26 @@ namespace Zork.Builder
             Room = room ?? throw new ArgumentNullException(nameof(room));
         }
 
-        // private GameViewModel ViewModel
-        // {
-        //     get => _viewModel;
-        //     set
-        //     {
-        //         if (_viewModel != value)
-        //         {
-        //             _viewModel = value;
-        //             gameViewModelBindingSource.DataSource = _viewModel;
-        //         }
-        //     }
-        // }
-
         private void NeighborComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (_room != null)
             {
-                Room selectedNeighbor = (Room)Neighbor;
-                if (selectedNeighbor == NoNeighbor)
+                Room selectedNeighbor = Neighbor;
+                if (_room.Neighbors != null)
                 {
-                    _room.Neighbors.Remove(Direction);
+                    if (selectedNeighbor == NoNeighbor)
+                    {
+                        _room.Neighbors.Remove(Direction);
+                    }
+                    else
+                    {
+                        _room.Neighbors[Direction] = selectedNeighbor;
+                    }
                 }
                 else
                 {
-                    _room.Neighbors[Direction] = selectedNeighbor;
+                    _room.Neighbors = new Dictionary<Directions, Room>();
+                    _room.Neighbors.Add(Direction, selectedNeighbor);
                 }
             }
         }
@@ -94,8 +96,6 @@ namespace Zork.Builder
         public NeighborControl()
         {
             InitializeComponent();
-            // ViewModel = new GameViewModel();
-            // gameViewModelBindingSource.DataSource = ViewModel;
         }
 
         public Directions Direction
@@ -108,7 +108,6 @@ namespace Zork.Builder
             }
         }
 
-        // private GameViewModel _viewModel;
         private Room _room;
         private Directions _neighborDirection;
     }

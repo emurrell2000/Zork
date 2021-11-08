@@ -66,7 +66,7 @@ namespace Zork.Builder
             this.Controls.Add(this.neighborComboBox);
             this.Controls.Add(this.directionTextBox);
             this.Name = "NeighborControl";
-            this.Size = new System.Drawing.Size(130, 57);
+            this.Size = new System.Drawing.Size(130, 53);
             ((System.ComponentModel.ISupportInitialize)(this.gameViewModelBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
