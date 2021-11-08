@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
-using Zork.Common;
 
 namespace Zork.Builder
 {
@@ -15,10 +14,21 @@ namespace Zork.Builder
 
         public bool IsGameLoaded { get; set; }
 
-        public string WelcomeMessage { get; set; }
-        public string ExitMessage { get; set; }
-        public BindingList<Room> StartingLocations { get; set; }
-        public string StartingLocation { get; set; }
+        public string WelcomeMessage
+        {
+            get => _game.WelcomeMessage;
+            set => _game.WelcomeMessage = value;
+        }
+        public string ExitMessage
+        {
+            get => _game.ExitMessage;
+            set => _game.ExitMessage = value;
+        }
+        public string StartingLocation
+        {
+            get => _game.StartingLocation;
+            set => _game.StartingLocation = value;
+        }
         public BindingList<Room> Rooms { get; set; }
 
         public Game Game
@@ -34,14 +44,12 @@ namespace Zork.Builder
                         ExitMessage = _game.ExitMessage;
                         StartingLocation = _game.StartingLocation;
                         Rooms = new BindingList<Room>(_game.World.Rooms);
-                        StartingLocations = new BindingList<Room>(Rooms);
                     }
                     else
                     {
                         WelcomeMessage = "Welcome to Zork!";
                         ExitMessage = "Thank you for playing!";
                         StartingLocation = "";
-                        StartingLocations = new BindingList<Room>(new List<Room>());
                         Rooms = new BindingList<Room>(new List<Room>());
                     }
                 }
@@ -51,7 +59,6 @@ namespace Zork.Builder
                     WelcomeMessage = "Welcome to Zork!";
                     ExitMessage = "Thank you for playing!";
                     StartingLocation = "";
-                    StartingLocations = new BindingList<Room>(new List<Room>());
                     Rooms = new BindingList<Room>(new List<Room>());
                 }
             }

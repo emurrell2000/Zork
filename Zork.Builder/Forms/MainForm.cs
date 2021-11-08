@@ -1,12 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using Newtonsoft.Json;
 
@@ -79,6 +74,7 @@ namespace Zork.Builder
 
             IsGameLoaded = false;
         }
+
         #region EventHandlers
         private void newMenu_Click(object sender, EventArgs e)
         {
@@ -105,14 +101,14 @@ namespace Zork.Builder
                         entry.Value.Room = selectedRoom;
                     }
 
-                    Room startingRoom = ViewModel.StartingLocations.FirstOrDefault(room => room.Name.Equals(ViewModel.StartingLocation, StringComparison.OrdinalIgnoreCase));
+                    Room startingRoom = ViewModel.Rooms.FirstOrDefault(room => room.Name.Equals(ViewModel.StartingLocation, StringComparison.OrdinalIgnoreCase));
                     if (startingRoom != null)
                     {
-                        startingComboBox.SelectedItem = ViewModel.StartingLocations.FirstOrDefault(room => room.Name.Equals(ViewModel.StartingLocation, StringComparison.OrdinalIgnoreCase));
+                        startingComboBox.SelectedItem = ViewModel.Rooms.FirstOrDefault(room => room.Name.Equals(ViewModel.StartingLocation, StringComparison.OrdinalIgnoreCase));
                     }
                     else
                     {
-                        startingComboBox.SelectedItem = ViewModel.StartingLocations.FirstOrDefault();
+                        startingComboBox.SelectedItem = ViewModel.Rooms.FirstOrDefault();
                     }
                 }
                 catch (Exception ex)

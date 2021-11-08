@@ -28,3 +28,9 @@ E:\Zork Project\Zork\Zork.Builder\bin\Debug\Newtonsoft.Json.xml
 E:\Zork Project\Zork\Zork.Builder\obj\Debug\Zork.Builder.AddRoomForm.resources
 E:\Zork Project\Zork\Zork.Builder\obj\Debug\Zork.Builder.csproj.Fody.CopyLocal.cache
 E:\Zork Project\Zork\Zork.Builder\obj\Debug\Zork.Builder.NeighborControl.resources
+D:\Zork Project\Zork\Zork.Builder\bin\Debug\Newtonsoft.Json.dll
+D:\Zork Project\Zork\Zork.Builder\bin\Debug\Newtonsoft.Json.xml
+D:\Zork Project\Zork\Zork.Builder\obj\Debug\Zork.Builder.AddRoomForm.resources
+D:\Zork Project\Zork\Zork.Builder\obj\Debug\Zork.Builder.NeighborControl.resources
+D:\Zork Project\Zork\Zork.Builder\obj\Debug\Zork.Builder.csproj.Fody.CopyLocal.cache
+D:\Zork Project\Zork\Zork.Builder\obj\Debug\Zork.Builder.csproj.CopyComplete

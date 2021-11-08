@@ -1,11 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Zork.Builder
@@ -24,10 +19,12 @@ namespace Zork.Builder
                     _room = value;
                     if (_room != null)
                     {
-                        var neighborList = new List<Room>(Rooms);
-                        neighborList.Insert(0, NoNeighbor);
+                        // var neighborList = new List<Room>(Rooms);
+                        Rooms.Insert(0, Neighbor);
+                        // neighborList.Insert(0, NoNeighbor);
                         neighborComboBox.SelectedIndexChanged -= NeighborComboBox_SelectedIndexChanged;
-                        neighborComboBox.DataSource = neighborList;
+                        // neighborComboBox.DataSource = neighborList;
+                        neighborComboBox.DataSource = Rooms;
 
                         if (_room.Neighbors != null)
                         {
@@ -57,10 +54,32 @@ namespace Zork.Builder
 
         public BindingList<Room> Rooms { get; set; }
 
-        public NeighborControl(Directions neighborDirection, Room room)
+        public NeighborControl(List<Room> rooms, Directions neighborDirection, Room room)
         {
-            Direction = neighborDirection;
-            Room = room ?? throw new ArgumentNullException(nameof(room));
+            InitializeComponent();
+
+            // var neighborList = new List<Room>(Rooms);
+            rooms.Insert(0, NoNeighbor);
+            // neighborComboBox.SelectedIndexChanged -= NeighborComboBox_SelectedIndexChanged;
+            neighborComboBox.DataSource = rooms;
+
+            if (_room.Neighbors != null)
+            {
+                if (_room.Neighbors.TryGetValue(Direction, out Room neighbor))
+                {
+                    Neighbor = neighbor;
+                }
+                else
+                {
+                    Neighbor = NoNeighbor;
+                }
+            }
+            else
+            {
+                Neighbor = NoNeighbor;
+            }
+
+            // neighborComboBox.SelectedIndexChanged += NeighborComboBox_SelectedIndexChanged;
         }
 
         private void NeighborComboBox_SelectedIndexChanged(object sender, EventArgs e)

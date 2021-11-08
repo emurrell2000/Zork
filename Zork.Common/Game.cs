@@ -1,6 +1,5 @@
 ﻿using Newtonsoft.Json;
 using System;
-using System.ComponentModel;
 using System.Runtime.Serialization;
 
 namespace Zork
@@ -18,6 +17,8 @@ namespace Zork
 
         public World World { get; set; }
 
+        public IOutputService Output { get; set; }
+
         [OnDeserialized]
         private void OnDeserialized(StreamingContext context)
         {
@@ -29,30 +30,30 @@ namespace Zork
 
         public void Run()
         {
-            Console.WriteLine(WelcomeMessage);
+            Output.WriteLine(WelcomeMessage);
 
             Commands command = Commands.UNKNOWN;
             while (command != Commands.QUIT)
             {
-                Console.WriteLine(Player.CurrentRoom);
+                Output.WriteLine(Player.CurrentRoom);
                 if (Player.PreviousRoom != Player.CurrentRoom)
                 {
-                    Console.WriteLine(Player.CurrentRoom.Description);
+                    Output.WriteLine(Player.CurrentRoom.Description);
                     Player.PreviousRoom = Player.CurrentRoom;
                 }
-                Console.Write("> ");
+                Output.Write("> ");
 
                 command = ToCommand(Console.ReadLine().Trim());
             
                 switch (command)
                 {
                     case Commands.QUIT:
-                        Console.WriteLine(ExitMessage);
+                        Output.WriteLine(ExitMessage);
                         Player.MoveCount++; // effectively doesn't do anything but it's fun :)
                         break;
             
                     case Commands.LOOK:
-                        Console.WriteLine(Player.CurrentRoom.Description);
+                        Output.WriteLine(Player.CurrentRoom.Description);
                         Player.MoveCount++;
                         break;
             
@@ -63,14 +64,14 @@ namespace Zork
                         Directions direction = (Directions)command;
                         if (Player.Move(direction) == false)
                         {
-                            Console.WriteLine("The way is shut!");
+                            Output.WriteLine("The way is shut!");
                         }
                         Player.MoveCount++;
                         break;
 
                     case Commands.SCORE:
                         Player.MoveCount++;
-                        Console.WriteLine($"Your score would be {Player.Score}, in {Player.MoveCount} move(s).");
+                        Output.WriteLine($"Your score would be {Player.Score}, in {Player.MoveCount} move(s).");
                         break;
 
                     case Commands.REWARD:
@@ -79,7 +80,7 @@ namespace Zork
                         break;
             
                     default:
-                        Console.WriteLine("Unknown command.");
+                        Output.WriteLine("Unknown command.");
                         break;
                 }
             }

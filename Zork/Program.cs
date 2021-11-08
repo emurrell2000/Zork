@@ -9,6 +9,9 @@ namespace Zork
         {
             const string defaultGameFilename = "Zork.json";
             string gameFilename = args.Length > 0 ? args[(int)CommandLineArguments.GameFilename] : defaultGameFilename;
+
+            // ConsoleOutputService output = new ConsoleOutputService();
+            // Game game = Game.Load(gameFilename, output);
             Game game = JsonConvert.DeserializeObject<Game>(File.ReadAllText(gameFilename));
             game.Run();
         }
